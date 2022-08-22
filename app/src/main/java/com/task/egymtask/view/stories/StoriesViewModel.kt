@@ -25,18 +25,6 @@ class StoriesViewModel @Inject constructor(private val generalRepo: GeneralRepo)
         fetchStories()
     }
 
-    private fun handleIntent() {
-        viewModelScope.launch {
-            intentStories.consumeEach {
-                when (it) {
-                    is IntentStories.FetchStories -> {
-                        fetchStories()
-                    }
-                }
-            }
-        }
-    }
-
     private fun fetchStories() {
         val handler = CoroutineExceptionHandler { _, exception ->
             _state.value = StateStories.Error(exception.localizedMessage)
@@ -45,17 +33,12 @@ class StoriesViewModel @Inject constructor(private val generalRepo: GeneralRepo)
         viewModelScope.launch(handler) {
             _state.value = StateStories.Loading
             val response = generalRepo.questions()
-            if (response.code() == 200)
-                response.body()?.let {
-                    _state.value = StateStories.Stories(
-                        it
-                    )
-                }
+            if (response != null)
+                _state.value = StateStories.Stories(
+                    response
+                )
             else {
-                val msg = JsonParser().parse(
-                    response.errorBody()?.string()
-                ).asJsonObject.get("message").asString
-                _state.value = StateStories.Error(msg)
+                _state.value = StateStories.Error("Something went wrong")
             }
         }
     }

@@ -2,8 +2,11 @@ package com.task.egymtask.model.data_model
 
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+
 
 @Parcelize
 data class TopStoriesModel(
@@ -20,6 +23,7 @@ data class TopStoriesModel(
     @SerializedName("status")
     val status: String?
 ) : Parcelable {
+    @Entity(tableName = "stories")
     @Parcelize
     data class Result(
         @SerializedName("abstract")
@@ -52,6 +56,7 @@ data class TopStoriesModel(
         val shortUrl: String?,
         @SerializedName("subsection")
         val subsection: String?,
+        @PrimaryKey
         @SerializedName("title")
         val title: String?,
         @SerializedName("updated_date")

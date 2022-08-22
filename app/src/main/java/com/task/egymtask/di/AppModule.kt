@@ -1,5 +1,8 @@
 package com.task.egymtask.di
 
+import android.app.Application
+import androidx.room.Room
+import com.task.egymtask.model.StoriesDatabase
 import com.task.egymtask.model.api.ApiService
 import com.task.egymtask.model.api.GeneralApiHelperImpl
 import com.task.egymtask.model.repo.GeneralRepo
@@ -54,11 +57,18 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGeneralRepo(apiService: ApiService): GeneralRepo {
+    fun provideGeneralRepo(apiService: ApiService,db:StoriesDatabase): GeneralRepo {
         return GeneralRepo(
             GeneralApiHelperImpl(
-                apiService
+                apiService,
+                db
             )
         )
     }
+
+    @Provides
+    @Singleton
+    fun provideDatabase(app: Application) : StoriesDatabase =
+        Room.databaseBuilder(app, StoriesDatabase::class.java, "stories_database")
+            .build()
 }

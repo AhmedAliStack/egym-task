@@ -35,7 +35,9 @@ class StoriesAdapter(
             itemViewBinding.run {
                 tvStoryTitle.text = data.title
                 tvStoryAuthor.text = data.byline
-                data.multimedia?.get(0)?.url?.let { ivStoryImage.loadImage(context, it) }
+                data.multimedia?.find { it?.format == "Large Thumbnail" }?.let { result ->
+                    result.url?.let { ivStoryImage.loadImage(context, it) }
+                }
                 root.setOnClickListener {
                     onItemClicked.invoke(data)
                 }

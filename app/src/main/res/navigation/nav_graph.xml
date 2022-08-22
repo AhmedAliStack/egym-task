@@ -24,5 +24,17 @@
     <fragment
         android:id="@+id/storiesDetailsFragment"
         android:name="com.task.egymtask.view.stories_details.StoriesDetailsFragment"
-        tools:layout="@layout/fragment_stories_details" />
+        tools:layout="@layout/fragment_stories_details" >
+        <action
+            android:id="@+id/action_storiesDetailsFragment_to_webViewFragment2"
+            app:destination="@id/webViewFragment2" />
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment2"
+        android:name="com.task.egymtask.view.webview.WebViewFragment"
+        android:label="See More"
+        tools:layout="@layout/fragment_web_view" />
 </navigation>

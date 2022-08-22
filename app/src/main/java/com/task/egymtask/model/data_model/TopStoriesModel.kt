@@ -2,7 +2,10 @@ package com.task.egymtask.model.data_model
 
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+import android.os.Parcelable
 
+@Parcelize
 data class TopStoriesModel(
     @SerializedName("copyright")
     val copyright: String?,
@@ -16,7 +19,8 @@ data class TopStoriesModel(
     val section: String?,
     @SerializedName("status")
     val status: String?
-) {
+) : Parcelable {
+    @Parcelize
     data class Result(
         @SerializedName("abstract")
         val `abstract`: String?,
@@ -56,7 +60,8 @@ data class TopStoriesModel(
         val uri: String?,
         @SerializedName("url")
         val url: String?
-    ) {
+    ) : Parcelable {
+        @Parcelize
         data class Multimedia(
             @SerializedName("caption")
             val caption: String?,
@@ -74,6 +79,6 @@ data class TopStoriesModel(
             val url: String?,
             @SerializedName("width")
             val width: Int?
-        )
+        ) : Parcelable
     }
 }

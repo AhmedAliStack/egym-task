@@ -13,10 +13,16 @@
         <action
             android:id="@+id/action_storiesFragment_to_storiesDetailsFragment"
             app:destination="@id/storiesDetailsFragment" />
+        <argument
+            android:name="details"
+            app:argType="com.task.egymtask.model.data_model.TopStoriesModel$Result" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="Stories" />
     </fragment>
     <fragment
         android:id="@+id/storiesDetailsFragment"
         android:name="com.task.egymtask.view.stories_details.StoriesDetailsFragment"
-        android:label="Stories Details"
         tools:layout="@layout/fragment_stories_details" />
 </navigation>

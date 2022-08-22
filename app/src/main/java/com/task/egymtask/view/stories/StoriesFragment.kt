@@ -65,8 +65,11 @@ class StoriesFragment : Fragment() {
     private fun handleData(stories: TopStoriesModel) {
         binding.run {
             stories.results?.let {
-                StoriesAdapter(it){
-                    findNavController().navigate(R.id.action_storiesFragment_to_storiesDetailsFragment)
+                StoriesAdapter(it){ result ->
+                    val args = Bundle()
+                    args.putParcelable("details",result)
+                    args.putString("title",result.title)
+                    findNavController().navigate(R.id.action_storiesFragment_to_storiesDetailsFragment,args)
                 }.also { adapter ->
                     rvStories.adapter = adapter
                     rvStories.layoutManager = LinearLayoutManager(requireContext())

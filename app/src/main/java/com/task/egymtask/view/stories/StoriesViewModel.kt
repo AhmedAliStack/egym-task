@@ -44,7 +44,7 @@ class StoriesViewModel @Inject constructor(private val generalRepo: GeneralApiHe
         }
 
         viewModelScope.launch(handler) {
-            generalRepo.getRestaurants().collectLatest { resource ->
+            generalRepo.getStories().collectLatest { resource ->
                 resource.data?.let {
                     _state.value = StateStories.Stories(
                         it

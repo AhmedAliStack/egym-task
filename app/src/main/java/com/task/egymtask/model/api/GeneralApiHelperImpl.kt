@@ -1,5 +1,6 @@
 package com.task.egymtask.model.api
 
+import android.util.Log
 import androidx.room.withTransaction
 import com.task.egymtask.model.StoriesDatabase
 import com.task.egymtask.model.data_model.TopStoriesModel
@@ -21,7 +22,7 @@ class GeneralApiHelperImpl @Inject constructor(val apiService: ApiService, val d
         return result
     }
 
-    fun getRestaurants() = networkBoundResource(
+    fun getStories() = networkBoundResource(
         query = {
             storiesDao.getAllStories()
         },

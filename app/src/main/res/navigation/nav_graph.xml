@@ -15,7 +15,7 @@
             app:destination="@id/storiesDetailsFragment" />
         <argument
             android:name="details"
-            app:argType="com.task.egymtask.model.data_model.TopStoriesModel$Result" />
+            app:argType="com.task.egymtask.model.entities.StoriesEntity" />
         <argument
             android:name="title"
             app:argType="string"

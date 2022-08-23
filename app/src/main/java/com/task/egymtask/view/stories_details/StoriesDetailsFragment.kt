@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.task.egymtask.R
 import com.task.egymtask.databinding.FragmentStoriesDetailsBinding
 import com.task.egymtask.model.data_model.TopStoriesModel
+import com.task.egymtask.model.entities.StoriesEntity
 import com.task.egymtask.utils.loadImage
 
 class StoriesDetailsFragment : Fragment() {
@@ -32,15 +33,16 @@ class StoriesDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val arguments : TopStoriesModel.Result? = arguments?.getParcelable("details")
+        val arguments : StoriesEntity? = arguments?.getParcelable("details")
 
         binding.run {
             tvStoryTitle.text = arguments?.title
-            tvStoryAuthor.text = arguments?.byline
-            tvStoryDesc.text = arguments?.abstract
-            arguments?.multimedia?.find { it?.format == "Super Jumbo" }?.let { result ->
-                result.url?.let { ivStoryImage.loadImage(requireContext(), it) }
-            }
+            tvStoryAuthor.text = arguments?.auther
+            tvStoryDesc.text = arguments?.description
+            arguments?.image?.let { ivStoryImage.loadImage(requireContext(), it) }
+//            arguments?.multimedia?.find { it?.format == "Super Jumbo" }?.let { result ->
+//                result.url?.let { ivStoryImage.loadImage(requireContext(), it) }
+//            }
             tvSeeMore.setOnClickListener {
                 val args = Bundle()
                 args.putString("url", arguments?.url)

@@ -13,11 +13,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.task.egymtask.R
 import com.task.egymtask.databinding.FragmentStoriesBinding
+import com.task.egymtask.intent.IntentStories
 import com.task.egymtask.intent.StateStories
 import com.task.egymtask.model.data_model.TopStoriesModel
+import com.task.egymtask.model.entities.StoriesEntity
 import com.task.egymtask.view.stories.adapter.StoriesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StoriesFragment : Fragment() {
@@ -35,17 +38,23 @@ class StoriesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        startViewModel()
         observeViewModel()
+    }
+
+    private fun startViewModel() {
+        lifecycleScope.launch {
+            viewModel.intentStories.send(IntentStories.FetchStories)
+        }
     }
 
     private fun observeViewModel() {
         lifecycleScope.launchWhenStarted {
             viewModel.state.collectLatest {
-                when(it){
+                when (it) {
                     is StateStories.Error -> {
                         handleLoading(isLoading = false)
-                        Toast.makeText(requireContext(),it.error, Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), it.error, Toast.LENGTH_LONG).show()
                     }
                     StateStories.Idle -> {
 
@@ -62,20 +71,29 @@ class StoriesFragment : Fragment() {
         }
     }
 
-    private fun handleData(stories: TopStoriesModel) {
+    private fun handleData(stories: List<StoriesEntity>) {
+        handleEmpty(stories)
         binding.run {
-            stories.results?.let {
-                StoriesAdapter(it){ result ->
-                    val args = Bundle()
-                    args.putParcelable("details",result)
-                    args.putString("title",result.title)
-                    findNavController().navigate(R.id.action_storiesFragment_to_storiesDetailsFragment,args)
-                }.also { adapter ->
-                    rvStories.adapter = adapter
-                    rvStories.layoutManager = LinearLayoutManager(requireContext())
-                    adapter.notifyItemChanged(stories.results.size)
-                }
+            StoriesAdapter(stories) { result ->
+                val args = Bundle()
+                args.putParcelable("details", result)
+                args.putString("title", result.title)
+                findNavController().navigate(
+                    R.id.action_storiesFragment_to_storiesDetailsFragment,
+                    args
+                )
+            }.also { adapter ->
+                rvStories.adapter = adapter
+                rvStories.layoutManager = LinearLayoutManager(requireContext())
+                adapter.notifyItemChanged(stories.size)
             }
+        }
+    }
+
+    private fun handleEmpty(stories: List<StoriesEntity>) {
+        binding.run {
+            rvStories.isVisible = stories.isNotEmpty()
+            tvNoData.isVisible = stories.isEmpty()
         }
     }
 

@@ -5,7 +5,6 @@ import androidx.room.Room
 import com.task.egymtask.model.StoriesDatabase
 import com.task.egymtask.model.api.ApiService
 import com.task.egymtask.model.api.GeneralApiHelperImpl
-import com.task.egymtask.model.repo.GeneralRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,13 +56,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGeneralRepo(apiService: ApiService,db:StoriesDatabase): GeneralRepo {
-        return GeneralRepo(
-            GeneralApiHelperImpl(
+    fun provideGeneralRepo(apiService: ApiService,db:StoriesDatabase): GeneralApiHelperImpl {
+        return GeneralApiHelperImpl(
                 apiService,
                 db
             )
-        )
     }
 
     @Provides
